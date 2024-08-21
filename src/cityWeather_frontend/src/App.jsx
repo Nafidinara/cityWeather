@@ -2,14 +2,20 @@ import { useState } from 'react';
 import { cityWeather_backend } from 'declarations/cityWeather_backend';
 
 function App() {
-  const [greeting, setGreeting] = useState('');
+  const [weather, setWeather] = useState('');
+  const [city, setCity] = useState('');
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    const name = event.target.elements.name.value;
-    cityWeather_backend.greet(name).then((greeting) => {
-      setGreeting(greeting);
-    });
+    const cityName = event.target.elements.city.value;
+    try {
+      const weatherData = await cityWeather_backend.get_weather(cityName);
+      setWeather(weatherData);
+      setCity(cityName);
+    } catch (error) {
+      setWeather('Failed to fetch weather data. Please try again.');
+      console.error('Error fetching weather data:', error);
+    }
     return false;
   }
 
@@ -19,11 +25,16 @@ function App() {
       <br />
       <br />
       <form action="#" onSubmit={handleSubmit}>
-        <label htmlFor="name">Enter your name: &nbsp;</label>
-        <input id="name" alt="Name" type="text" />
-        <button type="submit">Click Me!</button>
+        <label htmlFor="city">Enter your city: &nbsp;</label>
+        <input id="city" alt="City" type="text" />
+        <button type="submit">Get Weather</button>
       </form>
-      <section id="greeting">{greeting}</section>
+      {weather && (
+        <section id="weather">
+          <h2>Weather in {city}</h2>
+          <p>{weather}</p>
+        </section>
+      )}
     </main>
   );
 }
