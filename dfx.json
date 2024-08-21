@@ -1,0 +1,26 @@
+{
+  "canisters": {
+    "cityWeather_backend": {
+      "main": "src/cityWeather_backend/main.mo",
+      "type": "motoko"
+    },
+    "cityWeather_frontend": {
+      "dependencies": [
+        "cityWeather_backend"
+      ],
+      "source": [
+        "src/cityWeather_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "cityWeather_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
